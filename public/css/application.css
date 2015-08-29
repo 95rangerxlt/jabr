@@ -61,7 +61,7 @@ textarea {
 /* utility classes */
 
 .debug {
-   border: 1px solid red;
+   border: 0px solid red;
 }
 
 /* global styles */
@@ -120,6 +120,9 @@ a:hover, a:active {
 
 /* atomic classes */
 
+.ds-no {display: none;}
+.fs-xs {font-size: .5em;}
+
 .ta-c { text-align: center; }
 
 .mt-sm { margin-top: 1em; }
@@ -136,24 +139,8 @@ a:hover, a:active {
 /* augments for trg */
 
 .col {
-    background-color: #D1DBBD;
+    /*background-color: #D1DBBD;*/
 }
-
-@media (min-width: 50em) {
-    .col {
-        border-left-width: 3px;
-        border-left-style: solid;
-        border-left-color: #91AA9D;
-    }
-
-    .col:first-child {
-        border-left: none;
-    }
-}
-
-
-
-
 
 
 
