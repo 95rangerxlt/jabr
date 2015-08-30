@@ -4,3 +4,16 @@ MADE IT!
 <% else %>
   no one logged in
 <% end %>
+
+<% @jabrs.each do |jabr| %>
+
+  <% if jabr.sender_id == current_user.id || jabr.recipient_id == current_user.id %>
+    <% if jabr.sender_id == current_user.id %>
+      <% recipient = @users.find(jabr.recipient_id) %>
+    <% else %>
+      <% recipient = @users.find(jabr.sender_id) %>
+    <% end %>
+
+    <a href="/jabrs/<%= jabr.id %>/messages">Jabr with <%= recipient.username %></a>
+  <% end %>
+<% end %>

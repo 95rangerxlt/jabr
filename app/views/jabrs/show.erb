@@ -1,0 +1,12 @@
+Messages!
+<ul>
+<% @messages.each do |message| %>
+  <li><%= message.user.username %> jabr'd <%= message.body %></li>
+<%end%>
+</ul>
+<form id="chat-form" action="/jabrs/<%=@jabr.id %>/messages" method="post">
+
+  <label>send a jabr</label>
+  <input type="text" name="message"><br>
+  <input type="submit" value="Submit!">
+</form>

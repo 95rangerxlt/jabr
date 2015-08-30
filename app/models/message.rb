@@ -1,3 +1,10 @@
 class Message < ActiveRecord::Base
-  # Remember to create a migration!
+  belongs_to :jabr
+  belongs_to :user
+
+  validates_presence_of :body, :jabr_id, :user_id
+
+  # def message_time
+  #   created_at.strftime(“%m/%d/%y at %l:%M %p”)
+  # end
 end
