@@ -1,12 +1,19 @@
-Messages!
-<ul>
-<% @messages.each do |message| %>
-  <li><%= message.user.username %> jabr'd <%= message.body %></li>
-<%end%>
-</ul>
-<form id="chat-form" action="/jabrs/<%=@jabr.id %>/messages" method="post">
+<div class="row ta-c debug">
+  <a href="/jabrs">other jabrs</a><br>
+  <a href="/sessions/delete">log out</a>
+  <h3 class="mt-lg">jabr-time!</h3>
+</div>
 
-  <label>send a jabr</label>
-  <input type="text" name="message"><br>
-  <input type="submit" value="Submit!">
-</form>
+<div id="history" class="row ta-c debug">
+  <% @messages.each do |message| %>
+    <p><%= message.user.username %> jabr'd <%= message.body %></p>
+  <%end%>
+</div>
+
+<div class="row ta-c debug">
+  <form id="chat-form" action="/jabrs/<%=@jabr.id %>/messages" method="post">
+
+    <input id="chat-input" class="ta-c" type="text" name="message" placeholder="send a jabr"><br>
+    <input type="submit" value="Submit!">
+  </form>
+</div>

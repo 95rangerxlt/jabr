@@ -37,7 +37,7 @@ $(document).ready(function() {
   });
   var channel = pusher.subscribe('chat_channel');
   channel.bind('new_message', function(data) {
-    $('ul').append("<li>" + data.username + " jabr'd " + data.message + "</li>")
+    $('#history').append("<p>" + data.username + " jabr'd " + data.message + "</p>")
   });
 
   $('#chat-form').on('submit', function(e){
@@ -51,6 +51,7 @@ $(document).ready(function() {
     chatSubmit.done(function(response){
       console.log("SUCCESS")
       console.log(response)
+      $('#chat-input').val('');
     })
     chatSubmit.fail(function(response){
       console.log("FAIL")

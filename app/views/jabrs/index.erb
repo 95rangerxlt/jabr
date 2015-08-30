@@ -1,19 +1,19 @@
-MADE IT!
-<% if logged_in? %>
-  <%= current_user.username %>
+<div class="row ta-c debug">
+  <% if logged_in? %>
+  <h3>welcome, <%= current_user.username %></h3>
+  <a href='/sessions/delete'>log out</a>
 <% else %>
-  no one logged in
+  <h3><a href='/'>log in</a>
 <% end %>
+</div>
 
-<% @jabrs.each do |jabr| %>
 
-  <% if jabr.sender_id == current_user.id || jabr.recipient_id == current_user.id %>
-    <% if jabr.sender_id == current_user.id %>
-      <% recipient = @users.find(jabr.recipient_id) %>
-    <% else %>
-      <% recipient = @users.find(jabr.sender_id) %>
+<div class="row mt-std ta-c debug">
+  <h3>jabr with:</h3>
+  <% @users.each do |user| %>
+    <% if user != current_user %>
+      <p><a href="/users/<%= user.id%>"><%= user.username %></a></p>
     <% end %>
-
-    <a href="/jabrs/<%= jabr.id %>/messages">Jabr with <%= recipient.username %></a>
   <% end %>
-<% end %>
+
+</div>

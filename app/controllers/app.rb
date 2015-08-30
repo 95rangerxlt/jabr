@@ -23,6 +23,11 @@ post '/sessions' do
   end
 end
 
+get '/sessions/delete' do
+  log_out
+  redirect '/'
+end
+
 get '/jabrs' do
   @jabrs = Jabr.all
   @users = User.all
@@ -54,4 +59,36 @@ post '/jabrs/:id/messages' do
   }
   Pusher['chat_channel'].trigger('new_message', options)
   "success".to_json
+end
+
+get '/users/:id' do
+  @jabrs = Jabr.where("recipient_id = ? OR sender_id = ?", current_user.id, current_user.id)
+  @jabr = nil
+  p "8" * 80
+  p @jabrs
+  other_user_id = params[:id].to_i
+
+  if @jabrs.length == 0
+    p "newb"
+    @jabr = Jabr.create(sender_id: current_user.id, recipient_id: other_user_id)
+    redirect "/jabrs/#{@jabr.id}/messages"
+  end
+
+  @jabrs.each do |jabr|
+  p "7" * 80
+  p jabr.recipient_id
+  p other_user_id
+    if jabr.recipient_id == other_user_id || jabr.sender_id == other_user_id
+      p "exists"
+      @jabr = jabr
+      p @jabr
+      redirect "/jabrs/#{@jabr.id}/messages"
+    end
+  end
+
+  p "creating"
+  @jabr = Jabr.create(sender_id: current_user.id, recipient_id: params[:id])
+  p @jabr
+
+  redirect "/jabrs/#{@jabr.id}/messages"
 end
