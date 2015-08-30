@@ -1,7 +1,7 @@
 require 'pusher'
-Pusher.app_id = ENV['APP_ID']
-Pusher.key = ENV['APP_KEY']
-Pusher.secret = ENV['APP_SECRET']
+Pusher.app_id = '138578'
+Pusher.key = '529cb21eacc7a9f5e30a'
+Pusher.secret = '9e0acd0ee23b26adf806'
 
 get '/' do
   erb :login
