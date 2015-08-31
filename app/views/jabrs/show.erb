@@ -1,3 +1,11 @@
+<% if !logged_in? %>
+<div class="row ta-c debug">
+  <h2>You must log in to view this page!</h2>
+  <a href='/'>home</a>
+</div>
+
+
+<% elsif @jabr.sender_id == current_user.id || @jabr.recipient_id == current_user.id %>
 <div class="row ta-c debug">
   <a href="/jabrs">other jabrs</a><br>
   <a href="/sessions/delete">log out</a>
@@ -17,3 +25,12 @@
     <input type="submit" value="Submit!">
   </form>
 </div>
+
+
+<% else %>
+<div class="row ta-c debug">
+  <h2>You do not have permission to view this page!</h2>
+  <a href='/jabrs'>other jabrs</a>
+</div>
+
+<% end %>
