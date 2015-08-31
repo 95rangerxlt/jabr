@@ -6,6 +6,7 @@
 
 
 <% elsif @jabr.sender_id == current_user.id || @jabr.recipient_id == current_user.id %>
+
 <div class="row ta-c debug">
   <a href="/jabrs">other jabrs</a><br>
   <a href="/sessions/delete">log out</a>
@@ -20,7 +21,7 @@
 
 <div class="row ta-c debug">
   <form id="chat-form" action="/jabrs/<%=@jabr.id %>/messages" method="post">
-
+    <input id="jabr-channel" name="jabr-channel" type="hidden" value="jabr-<%= @jabr.id %>">
     <input id="chat-input" class="ta-c" type="text" name="message" placeholder="send a jabr"><br>
     <input type="submit" value="Submit!">
   </form>
@@ -28,6 +29,7 @@
 
 
 <% else %>
+
 <div class="row ta-c debug">
   <h2>You do not have permission to view this page!</h2>
   <a href='/jabrs'>other jabrs</a>

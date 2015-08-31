@@ -31,31 +31,32 @@ $(document).ready(function() {
     $('#register-container').show();
   })
 
-  var pusher = new Pusher('529cb21eacc7a9f5e30a');
-  var chatWidget = new PusherChatWidget(pusher, {
-    // chatEndPoint: 'pusher-realtime-chat-widget/src/php/chat.php'
-  });
-  var channel = pusher.subscribe('chat_channel');
-  channel.bind('new_message', function(data) {
-    $('#history').append("<p>" + data.username + " jabr'd " + data.message + "</p>")
-  });
 
   $('#chat-form').on('submit', function(e){
     e.preventDefault();
-    var chatSubmit = $.ajax({
+    var channelName = $('#jabr-channel').val();
+    console.log(channelName);
+    var pusher = new Pusher('529cb21eacc7a9f5e30a');
+    var channel = pusher.subscribe(channelName);
+    channel.bind('new_message', function(data) {
+      $('#history').append("<p>" + data.username + " jabr'd " + data.message + "</p>")
+    });
+
+    $.ajax({
       url: $(this).attr('action'),
       method: 'post',
       dataType: 'json',
       data: $(this).serialize()
     })
-    chatSubmit.done(function(response){
+    .done(function(response){
       console.log("SUCCESS")
       console.log(response)
       $('#chat-input').val('');
     })
-    chatSubmit.fail(function(response){
+    .fail(function(response){
       console.log("FAIL")
       console.log(response)
-    })
-  })
+    });
+
+  });
 });

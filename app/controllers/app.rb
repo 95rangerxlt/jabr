@@ -3,15 +3,18 @@ Pusher.app_id = ENV['APP_ID']
 Pusher.key = ENV['APP_KEY']
 Pusher.secret = ENV['APP_SECRET']
 
+###########      Log In / Create User / Log Out   #############
 get '/' do
   erb :login
 end
+
 
 post '/users' do
   @user = User.create(username: params[:username], password: params[:password])
   log_in(@user)
   redirect '/jabrs'
 end
+
 
 post '/sessions' do
   @user = User.find_by(username: params[:username])
@@ -23,16 +26,22 @@ post '/sessions' do
   end
 end
 
+
 get '/sessions/delete' do
   log_out
   redirect '/'
 end
 
+
+###########      Jabr Controller     #############
 get '/jabrs' do
   @jabrs = Jabr.all
   @users = User.all
+
   erb :"jabrs/index"
 end
+
+
 
 post '/jabrs' do
   if Jabrs.between(params[:sender_id], params[:recipient_id]).present?
@@ -40,55 +49,52 @@ post '/jabrs' do
   else
     @jabr = Jabr.create(sender_id: current_user.id, recipient_id: 1)
   end
+
   redirect "/jabrs/#{@jabr.id}/messages"
 end
+
+
 
 get '/jabrs/:id/messages' do
   @jabr = Jabr.find(params[:id])
   @messages = @jabr.messages
-  # @recipient = User.find(@jabr.sender_id)
 
   erb :"jabrs/show"
 end
 
+
+
 post '/jabrs/:id/messages' do
+  p params
+  p params['jabr-channel']
   @message = Message.create(user_id: current_user.id, body: params[:message], jabr_id: params[:id])
   options = {
     message: @message.body,
     username: current_user.username
   }
-  Pusher['chat_channel'].trigger('new_message', options)
+
+  Pusher[params['jabr-channel']].trigger('new_message', options)
   "success".to_json
 end
+
+
 
 get '/users/:id' do
   @jabrs = Jabr.where("recipient_id = ? OR sender_id = ?", current_user.id, current_user.id)
   @jabr = nil
-  p "8" * 80
-  p @jabrs
   other_user_id = params[:id].to_i
 
   if @jabrs.length == 0
-    p "newb"
     @jabr = Jabr.create(sender_id: current_user.id, recipient_id: other_user_id)
     redirect "/jabrs/#{@jabr.id}/messages"
   end
 
   @jabrs.each do |jabr|
-  p "7" * 80
-  p jabr.recipient_id
-  p other_user_id
     if jabr.recipient_id == other_user_id || jabr.sender_id == other_user_id
-      p "exists"
-      @jabr = jabr
-      p @jabr
-      redirect "/jabrs/#{@jabr.id}/messages"
+      redirect "/jabrs/#{jabr.id}/messages"
     end
   end
 
-  p "creating"
   @jabr = Jabr.create(sender_id: current_user.id, recipient_id: params[:id])
-  p @jabr
-
   redirect "/jabrs/#{@jabr.id}/messages"
 end
