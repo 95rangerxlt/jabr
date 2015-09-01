@@ -32,12 +32,14 @@ $(document).ready(function() {
   })
 
 
+  if ($('#jabr-channel').length === 1) {
     var pusher = new Pusher('529cb21eacc7a9f5e30a');
     var channelName = $('#jabr-channel').val();
     var channel = pusher.subscribe(channelName);
     channel.bind('new_message', function(data) {
       $('#history').append("<p>" + data.username + " jabr'd " + data.message + "</p>")
     });
+  }
 
   $('#chat-form').on('submit', function(e){
     e.preventDefault();
