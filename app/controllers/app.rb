@@ -65,8 +65,6 @@ end
 
 
 post '/jabrs/:id/messages' do
-  p params
-  p params['jabr-channel']
   @message = Message.create(user_id: current_user.id, body: params[:message], jabr_id: params[:id])
   options = {
     message: @message.body,

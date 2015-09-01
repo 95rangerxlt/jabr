@@ -32,15 +32,15 @@ $(document).ready(function() {
   })
 
 
-  $('#chat-form').on('submit', function(e){
-    e.preventDefault();
-    var channelName = $('#jabr-channel').val();
-    console.log(channelName);
     var pusher = new Pusher('529cb21eacc7a9f5e30a');
+    var channelName = $('#jabr-channel').val();
     var channel = pusher.subscribe(channelName);
     channel.bind('new_message', function(data) {
       $('#history').append("<p>" + data.username + " jabr'd " + data.message + "</p>")
     });
+
+  $('#chat-form').on('submit', function(e){
+    e.preventDefault();
 
     $.ajax({
       url: $(this).attr('action'),
@@ -49,8 +49,7 @@ $(document).ready(function() {
       data: $(this).serialize()
     })
     .done(function(response){
-      console.log("SUCCESS")
-      console.log(response)
+      console.log("New message pushed")
       $('#chat-input').val('');
     })
     .fail(function(response){
